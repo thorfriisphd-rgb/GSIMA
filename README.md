@@ -105,8 +105,8 @@ Final MG-projected cassette used for SWING analysis.
 
 Represents the conserved CCMHCG/C12 interaction core after dual-gate filtering:
 
-- occupancy threshold => 60%
-- chemistry dominance threshold => 90%
+- occupancy threshold ≥ 60%
+- chemistry dominance threshold ≥ 90%
 
 ---
 
