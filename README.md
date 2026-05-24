@@ -105,8 +105,8 @@ Final MG-projected cassette used for SWING analysis.
 
 Represents the conserved CCMHCG/C12 interaction core after dual-gate filtering:
 
-- occupancy threshold = 60%
-- chemistry dominance threshold = 90%
+- occupancy threshold => 60%
+- chemistry dominance threshold => 90%
 
 ---
 
@@ -257,7 +257,7 @@ SWING does not test simple sequence conservation alone.
 
 Rather, it evaluates whether projected MG cassette positions exhibit conserved biochemical interaction grammar across deeply divergent MyhT substrates.
 
-Strong convergence in the projected cassette, combined with collapse of signal under randomized controls, supports the interpretation that the CCMHCG/IBAM MG cassette encodes a conserved biochemical interaction architecture rather than arbitrary local sequence similarity.
+Strong convergence in the projected cassette, combined with collapse of signal under randomized controls, supports the interpretation that the CCHC/IBAM MG cassette encodes a conserved biochemical interaction architecture rather than arbitrary local sequence similarity.
 
 ---
 
