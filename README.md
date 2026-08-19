@@ -6,7 +6,7 @@ Current release: v2
 
 ## Conceptual framework
 
-The Coiled-coil heptad complementarity (CCHC)-SWING-analyzer operates downstream of the IBAM Grammar Engine (IGE).
+The Coiled-coil heptad complementarity (CCHC)-SWING-analyzer operates downstream of the Projected Residue Interaction-Space Mapper (PRISM).
 
 The broader analytical framework proceeds as:
 
@@ -34,7 +34,7 @@ This repository implements a project-specific, lightweight adaptation inspired b
 
 SWING represents protein interactions by sliding windows across paired sequences and encoding amino-acid property differences as an interaction vocabulary.
 
-In this repository, the same broad conceptual principle is adapted to the IBAM/C12orf29 system: an IBAM-Grammar-Engine-derived major-groove cassette is compared against conserved MyhT sequence windows to test cassette-level interaction-grammar convergence.
+In this repository, the same broad conceptual principle is adapted to the IBAM/C12orf29 system: a PRISM-derived major-groove cassette is compared against conserved MyhT sequence windows to test cassette-level interaction-grammar convergence.
 
 This implementation is not a re-release of the original SWING model. It is a simplified, project-specific analytical adaptation for CCHC/C12–MyhT interaction-grammar testing.
 
