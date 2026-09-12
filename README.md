@@ -4,11 +4,11 @@
 
 Pronounced **gee-SIMA**.
 
-Current release: v2
+Current release: **v3**
 
 GSIMA is a sequence-based, cross-taxon biochemical-convergence analyzer for the PRISM-derived IBAM/C12orf29 major-groove (MG) cassette. It operates within the broader **Coiled-coil heptad complementarity (CCHC)** framework.
 
-Earlier development versions of this analysis were referred to as **CCHC-SWING-Analyzer** or **SWING Lite**. **GSIMA** is the formal method name used hereafter.
+Earlier development versions of this analysis were referred to as **CCHC-SWING-Analyzer** or **SWING Lite**. **GSIMA** is the formal method and software name used hereafter.
 
 ---
 
@@ -16,7 +16,7 @@ Earlier development versions of this analysis were referred to as **CCHC-SWING-A
 
 GSIMA operates downstream of the **Projected Residue Interaction-Space Mapper (PRISM)**.
 
-The broader analytical framework proceeds as:
+The relevant analysis flow is:
 
 ```text
 Molecular dynamics trajectories
@@ -26,15 +26,14 @@ PRCO contact decoding
 PRISM evolutionary projection
         ↓
 MG cassette derivation
-        ↓
-HARP register enrichment analysis
-        ↓
-GSIMA biochemical-convergence analysis
-        ↓
-DALILite structural falsification
+        ├──────────────→ HARP register-enrichment analysis
+        │
+        └──────────────→ GSIMA biochemical-convergence analysis
 ```
 
 The MG cassette is defined upstream by the structure/MD-based PRISM framework. GSIMA does **not** derive the cassette de novo. Instead, it evaluates the predefined cassette using sequence chemistry only.
+
+**DALILite structural benchmarking is a separate project-level validation stream.** It tests whether IBAM shares the canonical RNA-ligase fold and is not an input to GSIMA.
 
 ---
 
@@ -44,9 +43,9 @@ GSIMA is a project-specific analytical framework inspired by **Sliding Window In
 
 SWING represents protein interactions by sliding windows across paired sequences and encoding amino-acid property differences as an interaction vocabulary.
 
-GSIMA adopts the same broad biochemical-encoding principle for the IBAM/C12orf29–MyhT system, but does not reproduce the full SWING architecture. In particular, GSIMA does **not** use SWING's Doc2Vec embedding or downstream machine-learning classification framework.
+GSIMA adopts the same broad biochemical-encoding principle for the IBAM/C12orf29–MyhT system, but does **not** reproduce the full SWING architecture. In particular, GSIMA does not use SWING's Doc2Vec embedding or downstream machine-learning classification framework.
 
-Instead, GSIMA applies a custom cassette-specific aggregation and cross-taxon conservation analysis to a PRISM-derived IBAM/C12orf29 MG cassette and matched MyhT sequence windows.
+Instead, GSIMA applies a custom cassette-specific aggregation and cross-taxon conservation analysis to a PRISM-derived IBAM/C12orf29 MG cassette and matched MyhT sequence inputs.
 
 ### Biochemical metric
 
@@ -74,7 +73,7 @@ GSIMA adopts only the **pairwise biochemical-difference principle**. Its downstr
 
 Low X-Std indicates that a cassette position maintains a similar biochemical relationship to its MyhT sequence environment across divergent taxa. High X-Std indicates greater biochemical variability.
 
-The `X-Std < 0.5` threshold is a **project-specific classification criterion**; it is not a threshold defined by Grantham or by the original SWING framework.
+The `X-Std < 0.5` threshold is a **project-specific operational classification criterion**. It is not a threshold defined by Grantham or by the original SWING framework, and it should not be interpreted as a neutral-evolution threshold.
 
 Thus, the methodological lineage is:
 
@@ -82,7 +81,7 @@ Thus, the methodological lineage is:
 **Siwek et al. (2025) → pairwise biochemical-difference interaction encoding**  
 **GSIMA → cassette-specific aggregation and cross-taxon biochemical-conservation analysis**
 
-The Grantham polarity scale and SWING biochemical-encoding principle provide the physicochemical and methodological foundations of GSIMA, while its aggregation strategy, cross-taxon statistic, classification threshold, and falsification framework are specific to GSIMA.
+The Grantham polarity scale and SWING biochemical-encoding principle provide the physicochemical and methodological foundations of GSIMA, while its aggregation strategy, cross-taxon statistic, classification threshold, and internal-control framework are specific to GSIMA.
 
 ### SWING citation
 
@@ -112,16 +111,18 @@ GSIMA/
 │   └── MyhT_fastas/
 │
 ├── scripts/
-│   ├── IBAM_SWING_script.py
-│   └── make_swing_controls.py
+│   ├── gsima_analysis.py
+│   ├── make_gsima_controls.py
+│   └── shuffle_replicate_test.sh
 │
 ├── docs/
+│   └── GSIMA_Methods_Results_Full.md
 │
 ├── results_<timestamp>/
-│   ├── SWING_validation_results.txt
-│   └── SWING_run_summary.txt
+│   ├── GSIMA_validation_results.txt
+│   └── GSIMA_run_summary.txt
 │
-├── controls_<timestamp>/
+├── controls_seed<seed>_<timestamp>/
 │   ├── 01_within_sequence_shuffle/
 │   ├── 02_column_shuffle/
 │   ├── 03_random_IBAM_windows/
@@ -129,17 +130,14 @@ GSIMA/
 │   └── results/
 │
 ├── run_pipeline.sh
-├── run_swing.sh
+├── run_gsima.sh
 ├── run_controls.sh
+├── run_seed_sweep.sh
 │
 └── README.md
 ```
 
-### Legacy filenames
-
-Several v2 script, launcher, and output filenames retain the earlier `SWING` terminology for compatibility and reproducibility, including `IBAM_SWING_script.py`, `run_swing.sh`, `SWING_validation_results.txt`, and `SWING_run_summary.txt`.
-
-These historical filenames do **not** indicate that GSIMA runs the full SWING machine-learning model.
+Historical development files and diagnostic copies may retain the earlier `SWING` terminology. They are not part of the active GSIMA execution path.
 
 ---
 
@@ -172,7 +170,9 @@ Represents the conserved IBAM/C12orf29 MG interaction cassette after dual-gate f
 
 ### `MyhT_fastas/`
 
-Myosin-tail FASTA windows spanning 25 taxa. The *Hahella chejuensis* IBAM-like outgroup is evaluated against human Myh7T.
+Myosin-tail sequence inputs corresponding to the 26 GSIMA analysis entries.
+
+The *Hahella chejuensis* IBAM-like outgroup is evaluated against human Myh7T, giving MyhT coverage for all **26 / 26** GSIMA entries.
 
 These sequences represent the candidate MyhT interaction substrates evaluated against the conserved MG cassette.
 
@@ -193,11 +193,11 @@ pip install numpy pandas biopython
 
 ---
 
-## Running the pipeline
+## Running GSIMA
 
-### Full reproducible run
+### Full reproducible pipeline
 
-From repository root:
+From the repository root:
 
 ```bash
 ./run_pipeline.sh
@@ -205,85 +205,120 @@ From repository root:
 
 This will:
 
-1. Run the primary GSIMA analysis
-2. Generate timestamped internal control datasets
-3. Score all control datasets using the same GSIMA framework
-4. Generate timestamped results bundles
-5. Generate an automated run-summary manifest
+1. run the primary GSIMA analysis;
+2. generate timestamped internal-control datasets;
+3. score all control datasets using the same GSIMA framework;
+4. generate timestamped result bundles; and
+5. generate an automated GSIMA run-summary manifest.
 
----
+A completed run reports:
 
-### Run GSIMA only
-
-The v2 launcher retains its historical filename:
-
-```bash
-./run_swing.sh
+```text
+GSIMA pipeline complete.
 ```
 
 ---
 
-### Generate controls only
+### Run GSIMA analysis only
+
+```bash
+./run_gsima.sh
+```
+
+The standalone launcher runs `scripts/gsima_analysis.py` and writes the current summary output to:
+
+```text
+results/GSIMA_validation_summary.txt
+```
+
+---
+
+### Generate and score controls
 
 ```bash
 ./run_controls.sh
 ```
 
+The default control workflow generates three control datasets and scores each with the same GSIMA analysis.
+
 ---
 
-### Run outputs
+### Seed-sweep robustness check
 
-Each execution produces timestamped result bundles.
+```bash
+./run_seed_sweep.sh
+```
+
+This auxiliary analysis tests the robustness of the within-sequence shuffle result across multiple random seeds.
+
+---
+
+## Run outputs
+
+Each full pipeline execution produces timestamped primary and control bundles.
 
 Example:
 
-```bash
-results_2026-05-10_10-49-52/
-controls_2026-05-10_10-49-52/
+```text
+results_2026-09-12_14-35-43/
+controls_seed20260505_2026-09-12_14-35-43/
 ```
 
----
+### Primary results
 
-## Primary results
-
-```bash
+```text
 results_<timestamp>/
-├── SWING_validation_results.txt
-└── SWING_run_summary.txt
+├── GSIMA_validation_results.txt
+└── GSIMA_run_summary.txt
 ```
 
-`SWING_validation_results.txt` contains:
+`GSIMA_validation_results.txt` contains:
 
-- ranked positional convergence statistics
-- invariant-position recovery
-- tryptophan conservation analysis
-- full validation output
+- ranked positional convergence statistics;
+- invariant-position recovery;
+- tryptophan conservation analysis; and
+- full GSIMA validation output.
 
-`SWING_run_summary.txt` contains:
+`GSIMA_run_summary.txt` contains:
 
-- headline convergence statistics
-- invariant-position recovery
-- invariant tryptophan recovery
-- control performance summaries
-- run-level provenance information
+- headline convergence statistics;
+- invariant-position recovery;
+- invariant tryptophan recovery;
+- control performance summaries; and
+- run-level provenance information.
 
-The `SWING_` prefix is retained in v2 output filenames for backward compatibility; the analytical framework represented by these outputs is GSIMA.
+For the validated n26 reference run, the headline result is:
+
+```text
+GSIMA-conserved positions (cross-std < 0.5): 24 / 26
+Invariant positions recovered by GSIMA:       9 / 9 (100%)
+```
+
+The two invariant tryptophan positions each have:
+
+```text
+cross-std = 0.190
+```
 
 ---
 
 ## Internal controls
 
-GSIMA includes three falsification controls designed to distinguish cassette-specific biochemical convergence from trivial sequence properties.
+GSIMA includes three internal controls designed to distinguish cassette-specific biochemical convergence from trivial sequence properties.
 
 ### Within-sequence shuffle
 
-Randomizes residue order within each cassette sequence while preserving its amino-acid composition.
+Randomizes residue order within each cassette sequence while preserving that cassette sequence's amino-acid composition.
 
-Tests whether the observed convergence can be explained by cassette amino-acid composition alone.
+This tests whether the observed convergence can be explained by amino-acid composition alone.
 
-#### Expected outcome
+For the validated reference run:
 
-Loss of convergence signal.
+```text
+GSIMA-conserved positions: 0 / 26
+```
+
+The collapse of the signal indicates that biochemical convergence depends on the organization of the cassette rather than composition alone.
 
 ---
 
@@ -291,9 +326,16 @@ Loss of convergence signal.
 
 Randomizes projected cassette column order while preserving the biochemical identity and composition of each column.
 
-This control tests whether GSIMA signal depends on fixed linear ordering of cassette columns or instead resides primarily in the biochemical properties of the individual conserved columns.
+This control asks whether the GSIMA signal depends on fixed linear ordering of cassette columns or instead resides primarily in the biochemical properties of the individual conserved columns.
 
-Retention of substantial signal after column shuffling is therefore mechanistically informative rather than a failed negative control.
+For the validated reference run:
+
+```text
+GSIMA-conserved positions: 24 / 26
+Invariant positions recovered: 9 / 9
+```
+
+Retention of the signal after column shuffling is therefore mechanistically informative rather than a failed negative control. It shows that the conserved biochemical information resides primarily in the cassette columns themselves rather than their linear ordering.
 
 ---
 
@@ -301,11 +343,15 @@ Retention of substantial signal after column shuffling is therefore mechanistica
 
 Samples random windows of the same length from the broader IBAM/C12orf29 alignment.
 
-Tests whether convergence is specific to the PRISM-derived MG cassette rather than a generic property of arbitrary IBAM/C12orf29 sequence windows.
+This tests whether convergence is specific to the PRISM-derived MG cassette rather than a generic property of arbitrary IBAM/C12orf29 sequence windows.
 
-#### Expected outcome
+For the validated reference run:
 
-Collapse of convergence signal.
+```text
+GSIMA-conserved positions: 0 / 26
+```
+
+The collapse of the signal supports specificity of the PRISM-derived MG cassette.
 
 ---
 
@@ -315,14 +361,42 @@ GSIMA does not test simple sequence conservation alone.
 
 Rather, it asks whether predefined MG cassette positions maintain conserved **biochemical polarity relationships** to matched MyhT sequence environments across deeply divergent taxa.
 
-Strong convergence within the PRISM-derived cassette, together with collapse of signal under composition-preserving and non-cassette controls, supports the interpretation that the IBAM/C12orf29 MG cassette encodes a conserved biochemical interaction architecture rather than arbitrary local sequence similarity.
+Strong convergence within the PRISM-derived cassette, together with collapse of signal under the within-sequence shuffle and random-window controls, supports the interpretation that the IBAM/C12orf29 MG cassette carries a conserved biochemical interaction pattern rather than merely reflecting arbitrary local sequence similarity.
 
-The analytical evidence is methodologically orthogonal to the structure/MD calculations used upstream to define the cassette:
+The column-shuffle control provides a distinct result: preservation of the GSIMA signal indicates that much of the detected biochemical constraint is intrinsic to the conserved cassette columns and does not require their original linear ordering.
+
+The GSIMA calculation is methodologically orthogonal to the structure/MD calculations used upstream to define the cassette:
 
 - **Upstream:** structure/MD-derived cassette definition
 - **GSIMA:** sequence-only Grantham-polarity evaluation
 
 No MD trajectories, structural coordinates, contact maps, AlphaFold3 models, or HARP register assignments are used in the GSIMA calculation itself.
+
+This distinction is important: GSIMA provides an **orthogonal evaluation of a cassette defined upstream by PRISM**, not an independent de novo discovery of that cassette.
+
+---
+
+## Reproducibility
+
+The full pipeline records timestamped primary and control outputs, including:
+
+- the analysis timestamp;
+- primary GSIMA results;
+- generated control datasets;
+- control result files;
+- control logs; and
+- a run-summary manifest.
+
+A successful reference run should reproduce the characteristic result pattern:
+
+```text
+Primary MG cassette:       24 / 26 GSIMA-conserved
+Within-sequence shuffle:    0 / 26
+Column shuffle:            24 / 26
+Random IBAM windows:        0 / 26
+```
+
+Numerical identity across code-renaming/refactoring runs was used as a regression check during the transition from the earlier CCHC-SWING-Analyzer naming to GSIMA.
 
 ---
 
@@ -335,6 +409,8 @@ Friis TE. *C12orf29 encodes IBAM (In Between Actin and Myosin), a sarcomeric pro
 Method/software name:
 
 **GSIMA — Grantham–SWING IBAM–MyhT Analysis**
+
+Please also cite the SWING and Grantham references above where the biochemical-encoding lineage is relevant.
 
 ---
 
