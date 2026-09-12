@@ -89,7 +89,7 @@ Thus, the methodological lineage is:
 **Siwek et al. (2025) → pairwise biochemical-difference interaction encoding**  
 **GSIMA → cassette-specific aggregation and cross-taxon biochemical-conservation analysis**
 
-The Grantham polarity scale and SWING biochemical-encoding principle provide the physicochemical and methodological foundations of GSIMA, while its aggregation strategy, cross-taxon statistic, classification threshold, and internal-control framework are specific to GSIMA.
+The Grantham polarity scale and SWING biochemical-encoding principle provide the physicochemical and methodological foundations of GSIMA, while its aggregation strategy, cross-taxon statistic, classification threshold, and internal-control framework are GSIMA specific.
 
 ### SWING citation
 
