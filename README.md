@@ -12,12 +12,12 @@ Earlier development versions of this analysis were referred to as **CCHC-SWING-A
 
 ---
 
-## GSIMA pipeline overview ##
+## GSIMA pipeline overview
 
 ![GSIMA — Grantham–SWING IBAM–MyhT Analysis pipeline](GSIMA_Flowchart.png)
 
-Figure 1. GSIMA analytical workflow.
-GSIMA evaluates the PRISM-derived 26-position IBAM/C12orf29 major-groove cassette against matched MyhT sequences using Grantham polarity differences and cross-taxon standard deviation (X-Std). The reference analysis classifies 24/26 positions as GSIMA-conserved (X-Std < 0.5) and recovers all 9/9 dual-gate invariant positions, including W154 and W273 (X-Std = 0.190 for both). Three internal controls test composition, cassette specificity, and dependence on cassette-column ordering.
+**Figure 1. GSIMA analytical workflow.** GSIMA evaluates the PRISM-derived 26-position IBAM/C12orf29 major-groove cassette against matched MyhT sequences using Grantham polarity differences and cross-taxon standard deviation (X-Std). The reference analysis classifies 24/26 positions as GSIMA-conserved (X-Std < 0.5) and recovers all 9/9 dual-gate invariant positions, including W154 and W273 (X-Std = 0.190 for both). Three internal controls test composition, cassette specificity, and dependence on cassette-column ordering.
+
 ---
 ## Conceptual framework
 
