@@ -141,8 +141,9 @@ GSIMA/
 ├── run_gsima.sh
 ├── run_controls.sh
 ├── run_seed_sweep.sh
-│
+├── GSIMA_Flowchart.png
 └── README.md
+
 ```
 
 Historical development files and diagnostic copies may retain the earlier `SWING` terminology. They are not part of the active GSIMA execution path.
