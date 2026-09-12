@@ -36,7 +36,7 @@ SWING represents protein interactions by sliding windows across paired sequences
 
 In this repository, the same broad conceptual principle is adapted to the IBAM/C12orf29 system: a PRISM-derived major-groove cassette is compared against conserved MyhT sequence windows to test cassette-level interaction-grammar convergence.
 
-This implementation is not a re-release of the original SWING model. It is a simplified, project-specific analytical adaptation for CCHC/C12–MyhT interaction-grammar testing.
+This implementation is not a re-release of the original SWING model. It is a simplified, project-specific analytical adaptation for IBAM/C12orf29–MyhT interaction-grammar testing.
 
 ### Biochemical metric
 
@@ -117,7 +117,7 @@ Mapping table linking projected MG positions to source alignment coordinates.
 
 Final MG-projected cassette used for SWING analysis.
 
-Represents the conserved CCHC/C12 interaction core after dual-gate filtering:
+Represents the conserved CCHC-IBAM interaction core after dual-gate filtering:
 
 - occupancy threshold ≥ 60%
 - chemistry dominance threshold ≥ 90%
