@@ -38,11 +38,25 @@ In this repository, the same broad conceptual principle is adapted to the IBAM/C
 
 This implementation is not a re-release of the original SWING model. It is a simplified, project-specific analytical adaptation for CCHC/C12–MyhT interaction-grammar testing.
 
+### Biochemical metric
+
+SWING Lite uses the Grantham amino-acid polarity scale as its biochemical metric. For each comparison, the absolute difference between the Grantham polarity values of the relevant amino acids is calculated. These polarity differences are then summarized across MyhT sequence residues and compared across taxa to assess whether individual MG cassette positions retain a conserved biochemical interaction profile.
+
+This use of the Grantham polarity scale follows the biochemical-encoding principle used by SWING, while the aggregation and cross-taxon analysis implemented here are specific to the CCHC-SWING-Analyzer.
+
 ### SWING citation
 
-Siwek, J. C., Omelchenko, A. A., Chhibbar, P., et al. (2025).
-*Sliding Window Interaction Grammar (SWING): a generalized interaction language model for peptide and protein interactions.*
-Nature Methods.
+Siwek, J. C., Omelchenko, A. A., Chhibbar, P., et al. (2025).  
+*Sliding Window Interaction Grammar (SWING): a generalized interaction language model for peptide and protein interactions.*  
+**Nature Methods**, 22, 1707–1719.  
+https://doi.org/10.1038/s41592-025-02723-1
+
+### Grantham polarity scale
+
+Grantham, R. (1974).  
+*Amino acid difference formula to help explain protein evolution.*  
+**Science**, 185(4154), 862–864.  
+https://doi.org/10.1126/science.185.4154.862
 
 ---
 
