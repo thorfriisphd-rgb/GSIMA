@@ -15,7 +15,7 @@ Molecular dynamics trajectories
         ↓
 PRCO contact decoding
         ↓
-IGE evolutionary projection
+PRISM evolutionary projection
         ↓
 MG cassette derivation
         ↓
