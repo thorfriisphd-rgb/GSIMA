@@ -2,7 +2,7 @@
 
 **Grantham–SWING IBAM–MyhT Analysis**
 
-Pronounced **gee-SIMA**.
+Pronounced **"gesima"**.
 
 Current release: **v3**
 
