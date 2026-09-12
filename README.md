@@ -12,6 +12,14 @@ Earlier development versions of this analysis were referred to as **CCHC-SWING-A
 
 ---
 
+## GSIMA pipeline overview
+
+![GSIMA — Grantham–SWING IBAM–MyhT Analysis pipeline](GSIMA_Flowchart.png)
+
+**Figure 1. GSIMA analytical workflow.**  
+The PRISM-derived 26-position IBAM/C12orf29 major-groove cassette is evaluated against matched MyhT sequence inputs using Grantham amino-acid polarity differences. For each cassette position and taxon, the cassette residue is compared with all valid residues in the corresponding MyhT sequence, producing a per-taxon mean polarity-difference score. Cross-taxon standard deviation (X-Std) quantifies biochemical conservation, with `X-Std < 0.5` used as the project-defined operational GSIMA-conservation threshold. The reference analysis classifies 24/26 cassette positions as GSIMA-conserved and recovers all 9/9 dual-gate invariant positions, including the invariant W154 and W273 sites (`X-Std = 0.190` for both). Internal controls test amino-acid composition, cassette specificity, and dependence on cassette-column ordering.
+
+---
 ## Conceptual framework
 
 GSIMA operates downstream of the **Projected Residue Interaction-Space Mapper (PRISM)**.
