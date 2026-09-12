@@ -1,17 +1,30 @@
 #!/usr/bin/env python3
 import random
+import argparse
 from pathlib import Path
 from datetime import datetime
+
+parser = argparse.ArgumentParser(
+    description="Generate SWING falsification controls (within-sequence shuffle, "
+                 "column shuffle, random C12 windows) for the IBAM MG n26 cassette."
+)
+parser.add_argument(
+    "--seed", type=int, default=20260505,
+    help="Random seed for all three shuffle/sampling controls (default: 20260505, "
+         "matching the locked-in manuscript run)."
+)
+args = parser.parse_args()
 
 ROOT = Path.cwd()
 MG = Path("data/MG_projected_trimmed_n26_core60_chem90.fa")
 C12 = Path("data/C12_aligned.fa")
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-OUT = ROOT / f"controls_{timestamp}"
+OUT = ROOT / f"controls_seed{args.seed}_{timestamp}"
 
-random.seed(20260505)
+random.seed(args.seed)
 
 print(f"Run timestamp: {timestamp}")
+print(f"Seed: {args.seed}")
 print()
 
 # Create standard subfolders
@@ -52,7 +65,12 @@ def write_fasta(records, path):
 mg = read_fasta(MG)
 c12 = read_fasta(C12)
 
-# 1. Within-sequence shuffle: preserves each taxon's cassette composition
+# 1. Within-sequence shuffle: preserves each taxon's cassette composition.
+#    NOTE: operates on the already dual-gate-filtered, position-fixed n26
+#    cassette — i.e. downstream of column/position selection, per taxon
+#    independently. This is what makes it a valid null: it destroys each
+#    taxon's residue-to-position mapping without touching the upstream
+#    position-selection step.
 within = []
 for name, seq in mg:
     chars = list(seq)

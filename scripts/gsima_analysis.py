@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-SWING Validation of IBAM MG Cassette (n26, 60/90 dual-gate)
+GSIMA — Grantham–SWING IBAM–MyhT Analysis (n26, 60/90 dual-gate)
 ============================================================
 Reconstructed from SWING_Validation_Methods_Results.md
 Updated for corrected n26 cassette (Magallana C-term truncation fixed).
@@ -21,7 +21,7 @@ This is orthogonal to the MD/IGE/PRCO-decode pipeline:
   - Only raw sequences + Grantham polarity scores
 
 Usage:
-    python3 swing_validation_n26.py \
+    python3 scripts/gsima_analysis.py \
         --cassette MG_projected_trimmed_n26_core60_chem90.fa \
         --myht_dir /path/to/myht_fastas/
 
@@ -88,10 +88,10 @@ def polarity_diff(aa1, aa2):
     return round(abs(AA_POLARITY[aa1] - AA_POLARITY[aa2]))
 
 
-def swing_position_mean(ibam_aa, myht_seq):
+def gsima_position_mean(ibam_aa, myht_seq):
     """
     For a single IBAM residue, compute mean polarity difference against
-    every valid position in MyhT. This is the per-taxon SWING score for
+    every valid position in MyhT. This is the per-taxon mean polarity-difference score for
     a given cassette position.
     Returns None if IBAM AA is unknown or no valid MyhT positions.
     """
@@ -106,7 +106,7 @@ def swing_position_mean(ibam_aa, myht_seq):
 def analyse_cassette(cassette_seqs, myht_seqs, shared_taxa):
     """
     For each cassette position (column), compute:
-      - Per-taxon mean polarity diff (SWING score)
+      - Per-taxon mean polarity-difference score
       - Cross-taxon mean and SD of those scores
       - Chemistry class consistency
     Returns list of dicts, one per cassette position.
@@ -128,7 +128,7 @@ def analyse_cassette(cassette_seqs, myht_seqs, shared_taxa):
             aa = cass[pos]
             if aa == '-':
                 continue  # gap in alignment at this position for this taxon
-            score = swing_position_mean(aa, myht)
+            score = gsima_position_mean(aa, myht)
             if score is not None:
                 taxon_scores[taxon] = score
                 residues[taxon] = aa
@@ -170,7 +170,7 @@ def analyse_cassette(cassette_seqs, myht_seqs, shared_taxa):
 
 
 def print_report(results, cassette_seqs, shared_taxa):
-    """Print the ranked SWING cross-taxon consistency report."""
+    """Print the ranked GSIMA cross-taxon consistency report."""
 
     # Identify invariant positions (single unique residue across all taxa present)
     invariant = set()
@@ -182,7 +182,7 @@ def print_report(results, cassette_seqs, shared_taxa):
 
     print()
     print("=" * 78)
-    print("SWING VALIDATION — IBAM MG CASSETTE n26 (60/90 dual-gate)")
+    print("GSIMA — IBAM MG CASSETTE n26 (60/90 dual-gate)")
     print("=" * 78)
     print(f"Taxa analysed: {len(shared_taxa)}")
     print(f"Cassette positions: {len(results)}")
@@ -196,20 +196,20 @@ def print_report(results, cassette_seqs, shared_taxa):
         key=lambda x: x['cross_std']
     )
 
-    print("Positions ranked by SWING cross-taxon consistency (lowest std = most conserved):")
+    print("Positions ranked by GSIMA cross-taxon consistency (lowest std = most conserved):")
     print("-" * 78)
     print(f"{'Pos':>4} {'N':>4} {'X-Std':>7} {'X-Mean':>7} {'DomClass':>9} "
           f"{'Chem%':>6} {'Inv':>4}  Residues (first 8 taxa)")
     print("-" * 78)
 
-    swing_conserved = 0
+    gsima_conserved = 0
     invariant_recovered = 0
     n_invariant = len(invariant)
 
     for r in ranked:
         is_inv = r['pos'] in invariant
         if r['cross_std'] < 0.5:
-            swing_conserved += 1
+            gsima_conserved += 1
         if is_inv and r['cross_std'] < 0.5:
             invariant_recovered += 1
 
@@ -231,8 +231,8 @@ def print_report(results, cassette_seqs, shared_taxa):
     print("-" * 78)
     print()
     print("VALIDATION SUMMARY")
-    print(f"  SWING-conserved positions (cross-std < 0.5): {swing_conserved} / {len(ranked)}")
-    print(f"  Invariant positions recovered by SWING:       "
+    print(f"  GSIMA-conserved positions (cross-std < 0.5): {gsima_conserved} / {len(ranked)}")
+    print(f"  Invariant positions recovered by GSIMA:       "
           f"{invariant_recovered} / {n_invariant}  "
           f"({'100%' if n_invariant and invariant_recovered == n_invariant else f'{invariant_recovered/n_invariant*100:.0f}%' if n_invariant else 'N/A'})")
     print()
@@ -252,7 +252,7 @@ def print_report(results, cassette_seqs, shared_taxa):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="SWING biochemical validation of IBAM MG cassette (n26)"
+        description="GSIMA biochemical-convergence analysis of IBAM MG cassette (n26)"
     )
     parser.add_argument(
         '--cassette', required=True,
@@ -264,7 +264,7 @@ def main():
     )
     parser.add_argument(
         '--std_threshold', type=float, default=0.5,
-        help='Cross-taxon std threshold for SWING-conserved classification (default: 0.5)'
+        help='Cross-taxon std threshold for GSIMA-conserved classification (default: 0.5)'
     )
     args = parser.parse_args()
 
