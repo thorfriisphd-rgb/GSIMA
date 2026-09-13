@@ -72,11 +72,11 @@ The original SWING framework generates these pairwise encodings by positionally 
 
 GSIMA adopts only the **pairwise biochemical-difference principle**. Its downstream analytical logic is specific to this project:
 
-1. For each IBAM/C12orf29 MG cassette position and each taxon, the cassette residue is compared against **all valid residues in the corresponding MyhT sequence**.
-2. The resulting absolute Grantham polarity differences are averaged to produce a **per-taxon mean polarity-difference score** for that cassette position.
-3. These per-taxon means are compared across taxa.
-4. The **cross-taxon standard deviation (X-Std)** is used as the measure of biochemical conservation.
-5. Positions with **X-Std < 0.5** are classified operationally as **GSIMA-conserved**.
+> 1. For each IBAM/C12orf29 MG cassette position and each taxon, the cassette residue is compared against **all valid residues in the corresponding MyhT sequence**.
+> 2. The resulting absolute Grantham polarity differences are averaged to produce a **per-taxon mean polarity-difference score** for that cassette position.
+> 3. These per-taxon means are compared across taxa.
+> 4. The **cross-taxon standard deviation (X-Std)** is used as the measure of biochemical conservation.
+> 5. Positions with **X-Std < 0.5** are classified operationally as **GSIMA-conserved**.
 
 Low X-Std indicates that a cassette position maintains a similar biochemical relationship to its MyhT sequence environment across divergent taxa. High X-Std indicates greater biochemical variability.
 
